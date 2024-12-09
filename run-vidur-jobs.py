@@ -14,6 +14,14 @@ list_of_models = {
     "llama2-70b" : "meta-llama/Llama-2-70b-hf"
 }
 
+list_of_schedulers = {
+    "round_robin" : "rr",
+    "random" : "rand",
+    "input_balance" : "ib",
+    "output_balance" : "ob",
+    "lor" : "lor"
+}
+
 
 def read_json_config(config, base_output_dir, scheduler_type):
     arguments = ["python3", "-m", "vidur.main", "--metrics_config_output_dir", f"{base_output_dir}"]
@@ -44,8 +52,8 @@ def read_json_config(config, base_output_dir, scheduler_type):
     """ Going to use below to decouple both graphs for now... """
     arguments_2 = copy.deepcopy(arguments)
 
-    arguments[4] = f"vidur_metrics_output_{config['replicas'][0]}_{scheduler_type}"
-    arguments_2[4] = f"vidur_metrics_output_{config['replicas'][1]}_{scheduler_type}"
+    arguments[4] = f"vidur_metrics_output_{config['replicas'][0]}_{list_of_schedulers[scheduler_type]}"
+    arguments_2[4] = f"vidur_metrics_output_{config['replicas'][1]}_{list_of_schedulers[scheduler_type]}"
     print(arguments[4], arguments_2[4])
 
     rep_index = arguments.index("--replica_config_model") + 1
@@ -93,10 +101,25 @@ def plot_cdfs(data_frames, metric, labels):
 def plot_time_series(data_frames, metric, labels):
     print("ts")
 
-#def plot_avg_mfu(mfu_json_path, labels):
+def plot_avg_mfu(llms, labels):
+    avg_mfus = []
+    for llm in llms:
+        mfu_data = glob.glob(f"{llm}/replica_*_stage_*_mfu.json")
+        mfu = 0
+        for file in mfu_data:
+           json_id = file[len(llm) + 1:]
+           with open(file, 'r') as data:
+               mfu_config = json.load(data)
+               mfu += mfu_config[f'{json_id.replace(".json", "")}_weighted_mean']
+        avg_mfus.append(mfu / len(mfu_data))
 
+    print(labels, avg_mfus)
+    df = pd.DataFrame({'Average Model FLOPS' : avg_mfus}, index=labels)
+    df.plot.bar(rot=0)
+    plt.show()
+    plt.cla()
+    plt.clf()
 
-    
 def plot_metrics(config, base_output_dir, schedulers):
     llms = glob.glob(f"./{base_output_dir}_*/*/plots")
     labels = []
@@ -105,7 +128,7 @@ def plot_metrics(config, base_output_dir, schedulers):
     """ Searching for all the output labels """
     for rep in config['replicas']:
         for sched in schedulers:
-            benchmark = f"{rep}_{sched}"
+            benchmark = f"{rep}_{list_of_schedulers[sched]}"
             for llm in llms:
                 index = -1
                 if (llm.find(benchmark) != -1):
@@ -116,8 +139,10 @@ def plot_metrics(config, base_output_dir, schedulers):
     for i,n in enumerate(config['metrics']):
         field_value = config['metrics'][n]
         if (int(field_value)):
+            if (n == "avg_mfu"):
+                plot_avg_mfu(llms, labels)
+                continue
             for llm in llms:
-                print(n)
                 file = f'{llm}/{n}.csv'
                 curr_df = pd.read_csv(file) 
                 data_frames.append(curr_df)

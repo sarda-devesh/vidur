@@ -4,6 +4,7 @@
 		"replicas" : ["llama2-7b", "llama3-8b"],
 		"num_replicas" : ["2", "2"],
 		"metrics" : {
+			"avg_mfu" : "1",
 			"request_inter_arrival_delay" : "0",
 			"request_e2e_time" : "1",
 			"request_e2e_time_normalized" : "1",
