@@ -92,8 +92,8 @@ def plot_cdfs(data_frames, metric, labels):
         plt.plot(smoothed_data, df['cdf'], label=label)
     plt.legend(labels)
     plt.xlabel(f"{metric} (s)")
-    plt.title(metric_to_title(metric))
     plt.ylabel('cdf')
+    plt.title(metric_to_title(metric))
     plt.show()
 
 
@@ -103,7 +103,12 @@ def plot_time_series(data_frames, metric, labels):
 
 def plot_avg_mfu(llms, labels):
     avg_mfus = []
-    for llm in llms:
+    color_labels = []
+    for llm, label in zip(llms, labels):
+        if ("llama3" in llm):
+            color_labels.append('green')
+        elif ("llama2" in llm):
+            color_labels.append('orange')
         mfu_data = glob.glob(f"{llm}/replica_*_stage_*_mfu.json")
         mfu = 0
         for file in mfu_data:
@@ -113,9 +118,13 @@ def plot_avg_mfu(llms, labels):
                mfu += mfu_config[f'{json_id.replace(".json", "")}_weighted_mean']
         avg_mfus.append(mfu / len(mfu_data))
 
-    print(labels, avg_mfus)
     df = pd.DataFrame({'Average Model FLOPS' : avg_mfus}, index=labels)
-    df.plot.bar(rot=0)
+    df.plot.bar(y='Average Model FLOPS', rot=0, color=color_labels)
+    # Below annoyingly only shows *one* legend
+    # legend = plt.legend() 
+    plt.xlabel("Benchmarks")
+    plt.ylabel("Average Model FLOPS")
+    plt.title("Average Model FLOPS per Benchmark")
     plt.show()
     plt.cla()
     plt.clf()
@@ -126,14 +135,14 @@ def plot_metrics(config, base_output_dir, schedulers):
     data_frames = []
 
     """ Searching for all the output labels """
-    for rep in config['replicas']:
-        for sched in schedulers:
-            benchmark = f"{rep}_{list_of_schedulers[sched]}"
-            for llm in llms:
-                index = -1
+    for llm in llms:
+        for rep in config['replicas']:
+            for sched in schedulers:
+                benchmark = f"{rep}_{list_of_schedulers[sched]}"
                 if (llm.find(benchmark) != -1):
                     index = llm.find(benchmark)
                     labels.append(llm[index : index + len(benchmark)])
+        
 
     """ For each of the highlighted metrics, let's graph those..."""
     for i,n in enumerate(config['metrics']):
