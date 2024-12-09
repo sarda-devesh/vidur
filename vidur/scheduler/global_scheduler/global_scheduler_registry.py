@@ -1,4 +1,6 @@
 from vidur.scheduler.global_scheduler.lor_global_scheduler import LORGlobalScheduler
+from vidur.scheduler.global_scheduler.input_global_scheduler import InputGlobalScheduler
+from vidur.scheduler.global_scheduler.output_global_scheduler import OutputGlobalScheduler
 from vidur.scheduler.global_scheduler.random_global_scheduler import (
     RandomGlobalScheduler,
 )
@@ -20,3 +22,5 @@ GlobalSchedulerRegistry.register(
     GlobalSchedulerType.ROUND_ROBIN, RoundRobinGlobalScheduler
 )
 GlobalSchedulerRegistry.register(GlobalSchedulerType.LOR, LORGlobalScheduler)
+GlobalSchedulerRegistry.register(GlobalSchedulerType.INPUT_BALANCE, InputGlobalScheduler)
+GlobalSchedulerRegistry.register(GlobalSchedulerType.OUTPUT_BALANCE, OutputGlobalScheduler)

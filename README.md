@@ -161,3 +161,22 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+
+Mamba setup:
+```
+$ eval "$(mamba shell hook --shell bash)"
+$ mamba activate
+$ mamba shell init --shell bash --root-prefix=/ssd/dsarda/mamba
+$ mamba shell reinit --shell bash
+$ mamba activate /ssd/dsarda/vidur/env
+```
+
+CLI vary arguments:
+```
+$ python -m vidur.main --global_scheduler_config lor
+$ python -m vidur.main --global_scheduler_config random
+$ python -m vidur.main --global_scheduler_config round_robin
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config input_balance
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config output_balance
+```

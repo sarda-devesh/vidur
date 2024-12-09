@@ -482,13 +482,23 @@ class RoundRobinGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
     def get_type():
         return GlobalSchedulerType.ROUND_ROBIN
 
-
 @dataclass
 class LORGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
     @staticmethod
     def get_type():
         return GlobalSchedulerType.LOR
 
+@dataclass
+class InputGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
+    @staticmethod
+    def get_type():
+        return GlobalSchedulerType.INPUT_BALANCE
+
+@dataclass
+class OutputGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
+    @staticmethod
+    def get_type():
+        return GlobalSchedulerType.OUTPUT_BALANCE
 
 @dataclass
 class BaseExecutionTimePredictorConfig(BasePolyConfig):
