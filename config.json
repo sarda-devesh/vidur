@@ -1,0 +1,25 @@
+{
+	"config" : {
+		"device" : "a100",
+		"replicas" : ["llama2-7b", "llama3-8b"],
+		"num_replicas" : ["2", "2"],
+		"metrics" : {
+			"request_inter_arrival_delay" : "0",
+			"request_e2e_time" : "1",
+			"request_e2e_time_normalized" : "1",
+			"request_execution_plus_preemption_time" : "1",
+			"request_scheduling_delay" : "1",
+			"request_execution_time" : "1", 
+			"request_preemption_time" : "1",
+			"decode_token_execution_plus_preemption_time" : "0",
+			"batch_num_tokens" : "1",
+			"batch_size" : "1",
+			"prefill_e2e_time"	: "1",
+			"prefill_time_execution_plus_preemption" : "1",
+			"prefill_time_execution_plus_preemption_normalized" : "1",
+			"decode_time_execution_plus_preemption_normalized" : "1",
+			"request_completion_time_series" : "1",
+			"request_arrival_time_series" : "1"
+		}
+	}
+}
