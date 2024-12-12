@@ -5,7 +5,7 @@ from vidur.utils.param_counter import ParamCounter
 
 class MemoryPlanner:
     def __init__(self, replica_config: ReplicaConfig, replica: Replica) -> None:
-        self._param_counter = ParamCounter(replica_config)
+        self._param_counter = ParamCounter(replica_config, replica._model_config)
         self._replica = replica
 
     def _get_kv_cache_memory_per_layer_per_request(self) -> int:

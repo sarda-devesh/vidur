@@ -16,13 +16,17 @@ class BaseGlobalScheduler(ABC):
 
         self._num_replicas = len(self._replicas)
 
-        execution_time_predictor = ExecutionTimePredictorRegistry.get(
-            config.execution_time_predictor_config.get_type(),
-            predictor_config=config.execution_time_predictor_config,
-            replica_config=config.cluster_config.replica_config,
-            replica_scheduler_config=config.cluster_config.replica_scheduler_config,
-            metrics_config=config.metrics_config,
-        )
+        execution_time_predictors = {
+            replica_id : ExecutionTimePredictorRegistry.get(
+                config.execution_time_predictor_config.get_type(),
+                predictor_config=config.execution_time_predictor_config,
+                replica_config=config.cluster_config.replica_config,
+                replica_scheduler_config=config.cluster_config.replica_scheduler_config,
+                metrics_config=config.metrics_config,
+                model_config=replica._model_config
+            )
+            for replica_id, replica in replicas.items()
+        }
         self._replica_schedulers = {
             replica_id: ReplicaSchedulerRegistry.get(
                 config.cluster_config.replica_scheduler_config.get_type(),
@@ -31,7 +35,7 @@ class BaseGlobalScheduler(ABC):
                 request_generator_config=config.request_generator_config,
                 replica=replica,
                 num_stages=replica.num_pipeline_stages,
-                execution_time_predictor=execution_time_predictor,
+                execution_time_predictor=execution_time_predictors[replica_id],
             )
             for replica_id, replica in replicas.items()
         }

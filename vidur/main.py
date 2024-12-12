@@ -15,9 +15,7 @@ def main() -> None:
         raise Exception(f'Got counts for {replica_counts} models but only {model_counts} models specified')
 
     simulator = Simulator(config)
-    '''
     simulator.run()
-    '''
 
 if __name__ == "__main__":
     main()

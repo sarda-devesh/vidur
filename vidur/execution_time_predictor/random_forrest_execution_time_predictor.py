@@ -9,7 +9,7 @@ from vidur.config import (
 from vidur.execution_time_predictor.sklearn_execution_time_predictor import (
     SklearnExecutionTimePredictor,
 )
-
+from vidur.config.model_config import BaseModelConfig
 
 class RandomForrestExecutionTimePredictor(SklearnExecutionTimePredictor):
     def __init__(
@@ -18,6 +18,7 @@ class RandomForrestExecutionTimePredictor(SklearnExecutionTimePredictor):
         replica_config: ReplicaConfig,
         replica_scheduler_config: BaseReplicaSchedulerConfig,
         metrics_config: MetricsConfig,
+        model_config : BaseModelConfig
     ) -> None:
         # will trigger model training
         super().__init__(
@@ -25,6 +26,7 @@ class RandomForrestExecutionTimePredictor(SklearnExecutionTimePredictor):
             replica_config=replica_config,
             replica_scheduler_config=replica_scheduler_config,
             metrics_config=metrics_config,
+            model_config=model_config
         )
 
     def _get_grid_search_params(self):
