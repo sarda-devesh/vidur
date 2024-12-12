@@ -2,23 +2,27 @@ from vidur.config import ReplicaConfig
 from vidur.entities import BatchStage
 from vidur.utils.param_counter import ParamCounter
 
-
 class MFUCalculator:
 
     def __init__(self, replica_config: ReplicaConfig):
-        param_counter = ParamCounter(replica_config)
-        self._num_params_per_device = param_counter.get_num_parameters_per_device()
-
-        model_config = replica_config.model_config
-
-        self._num_layers_per_device = (
-            model_config.num_layers // replica_config.num_pipeline_stages
-        )
-        self._num_heads_per_device = (
-            model_config.num_q_heads // replica_config.tensor_parallel_size
-        )
-        self._head_dimension = model_config.embedding_dim // model_config.num_q_heads
+        # Initialize the fields
+        self._num_params_per_device = 0
+        self._num_layers_per_device = 0
+        self._num_heads_per_device = 0
+        self._head_dimension = 0
         self._device_flops = replica_config.device_config.fp16_tflops * 2**40
+
+        all_models = replica_config.model_configs
+        for model_config in all_models:
+            param_counter = ParamCounter(replica_config, model_config)
+            self._num_params_per_device += param_counter.get_num_parameters_per_device()
+            self._num_layers_per_device += (
+                model_config.num_layers // replica_config.num_pipeline_stages
+            )
+            self._num_heads_per_device += (
+                model_config.num_q_heads // replica_config.tensor_parallel_size
+            )
+            self._head_dimension += model_config.embedding_dim // model_config.num_q_heads
 
     def _get_mlp_flops(self, batch_stage: BatchStage) -> float:
         num_tokens = sum(batch_stage.num_tokens)

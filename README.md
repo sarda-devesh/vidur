@@ -180,3 +180,8 @@ $ python -m vidur.main --global_scheduler_config round_robin
 $ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config input_balance
 $ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config output_balance
 ```
+
+Example request:
+```
+$ python -m vidur.main --replica_config_model_name meta-llama/Meta-Llama-3-8B meta-llama/Llama-2-7b-hf --cluster_config_num_replicas 2 1 --metrics_config_output_dir multi_simulator_output
+```

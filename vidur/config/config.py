@@ -426,8 +426,8 @@ class MetricsConfig:
 
 @dataclass
 class ReplicaConfig:
-    model_name: str = field(
-        default="meta-llama/Llama-2-7b-hf",
+    model_names: List[str] = field(
+        default_factory=lambda: ["meta-llama/Llama-2-7b-hf"],
         metadata={"help": "Model name."},
     )
     memory_margin_fraction: float = field(
@@ -453,9 +453,10 @@ class ReplicaConfig:
 
     def __post_init__(self):
         self.world_size = self.num_pipeline_stages * self.tensor_parallel_size
-        self.model_config: BaseModelConfig = BaseModelConfig.create_from_name(
-            self.model_name
-        )
+        self.model_configs: List[BaseModelConfig] = [
+            BaseModelConfig.create_from_name(model_name) 
+            for model_name in self.model_names
+        ]
         self.device_config: BaseDeviceSKUConfig = (
             BaseDeviceSKUConfig.create_from_type_string(self.device)
         )
@@ -618,8 +619,8 @@ class RandomForrestExecutionTimePredictorConfig(BaseExecutionTimePredictorConfig
 
 @dataclass
 class ClusterConfig:
-    num_replicas: int = field(
-        default=1,
+    num_replicas: List[int] = field(
+        default_factory= lambda: [1],
         metadata={"help": "Number of replicas."},
     )
     replica_config: ReplicaConfig = field(default_factory=ReplicaConfig)

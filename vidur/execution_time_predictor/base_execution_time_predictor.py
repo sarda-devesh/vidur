@@ -7,7 +7,7 @@ from vidur.config import (
     ReplicaConfig,
 )
 from vidur.entities import Batch, ExecutionTime
-
+from vidur.config.model_config import BaseModelConfig
 
 class BaseExecutionTimePredictor(ABC):
     def __init__(
@@ -16,10 +16,11 @@ class BaseExecutionTimePredictor(ABC):
         replica_config: ReplicaConfig,
         replica_scheduler_config: BaseReplicaSchedulerConfig,
         metrics_config: MetricsConfig,
+        model_config : BaseModelConfig
     ) -> None:
         self._config = predictor_config
         self._replica_config = replica_config
-        self._model_config = replica_config.model_config
+        self._model_config = model_config
 
         # get configs
         self._replica_scheduler_provider = str(replica_scheduler_config.get_type())

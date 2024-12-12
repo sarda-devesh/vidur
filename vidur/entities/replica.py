@@ -1,6 +1,7 @@
 from math import ceil
 
 from vidur.config import BaseRequestGeneratorConfig, ReplicaConfig
+from vidur.config.model_config import BaseModelConfig
 from vidur.entities.base_entity import BaseEntity
 from vidur.logger import init_logger
 
@@ -11,12 +12,13 @@ class Replica(BaseEntity):
     def __init__(
         self,
         replica_config: ReplicaConfig,
-        generator_config: BaseRequestGeneratorConfig,
+        model_config: BaseModelConfig,
+        generator_config: BaseRequestGeneratorConfig
     ) -> None:
         self._id = Replica.generate_id()
 
         self._replica_config = replica_config
-        self._model_config = replica_config.model_config
+        self._model_config = model_config
         self._device_config = replica_config.device_config
         self._generator_config = generator_config
 

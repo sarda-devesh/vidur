@@ -6,6 +6,9 @@ from subprocess import run, Popen, PIPE
 import copy
 from datetime import datetime
 import glob
+from multiprocessing import Pool
+import subprocess
+import os
 
 list_of_models = {
     "llama2-7b" : "meta-llama/Llama-2-7b-hf",
@@ -22,9 +25,8 @@ list_of_schedulers = {
     "lor" : "lor"
 }
 
-
 def read_json_config(config, base_output_dir, scheduler_type):
-    arguments = ["python3", "-m", "vidur.main", "--metrics_config_output_dir", f"{base_output_dir}"]
+    arguments = ["python", "-m", "vidur.main", "--metrics_config_output_dir", f"{base_output_dir}"]
     models = []
 
     if (len(config['replicas']) != len(config['num_replicas'])):
@@ -64,10 +66,6 @@ def read_json_config(config, base_output_dir, scheduler_type):
 
     arguments_2[rep_index:rep_index]  = [models[1]]
     arguments_2[nr_index:nr_index]  = [config['num_replicas'][1]]
-
-    # e2e and prefill completion time
-    print(arguments)
-    print(arguments_2)
     
     return arguments, arguments_2
 
@@ -95,8 +93,6 @@ def plot_cdfs(data_frames, metric, labels):
     plt.title(metric_to_title(metric))
     plt.ylabel('cdf')
     plt.show()
-
-
 
 def plot_time_series(data_frames, metric, labels):
     print("ts")
@@ -152,30 +148,30 @@ def plot_metrics(config, base_output_dir, schedulers):
                 plot_cdfs(data_frames, n, labels)
         del data_frames[:]
         
+def job_runner(command_to_run):
+    print("Running command", command_to_run)
+    subprocess.run(command_to_run, capture_output=True, text=True, shell = True)
+    return True
 
-def main(filename, base_output_dir, schedulers, run=0):
+def main(filename, base_output_dir, schedulers, run = False):
+    '''
     arguments = []
     processes = []
     with open(filename, 'r') as file:
         config = json.load(file)['config']
         for sched in schedulers:
             args, args_2 = read_json_config(config, base_output_dir, sched)
-            arguments.append(args)
-            arguments.append(args_2)
+            arguments.append(" ".join(args))
+            arguments.append(" ".join(args_2))
 
     if (run):
-        for args in arguments:
-            p = Popen(args, stdout=PIPE, stderr=PIPE, text=True)
-            processes.append(p) 
-    
-        for p in processes:
-            p.wait()
-            print(p.stdout)
-            print(p.stderr)
+        num_workers = int(os.cpu_count()/4)
+        with Pool(num_workers) as pool:
+            print(pool.map(job_runner, arguments))
+    '''
 
     plot_metrics(config, base_output_dir, schedulers)
 
-
 if __name__ == "__main__":
     schedulers = ['lor', 'random', 'round_robin', 'input_balance', 'output_balance']
-    main("config.json", "vidur_metrics_output", schedulers, run=0)
+    main("config.json", "vidur_metrics_output", schedulers, run = True)

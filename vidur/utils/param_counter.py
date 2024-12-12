@@ -1,12 +1,12 @@
 from math import ceil
 
 from vidur.config import ReplicaConfig
-
+from vidur.config.model_config import BaseModelConfig
 
 class ParamCounter:
-    def __init__(self, replica_config: ReplicaConfig) -> None:
+    def __init__(self, replica_config: ReplicaConfig, model_config : BaseModelConfig) -> None:
         self._replica_config = replica_config
-        self._model_config = self._replica_config.model_config
+        self._model_config = model_config
 
         assert (
             self._model_config.num_q_heads % self._replica_config.tensor_parallel_size

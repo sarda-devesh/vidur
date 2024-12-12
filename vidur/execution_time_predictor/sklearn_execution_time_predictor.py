@@ -23,7 +23,7 @@ from vidur.execution_time_predictor.base_execution_time_predictor import (
     BaseExecutionTimePredictor,
 )
 from vidur.logger import init_logger
-
+from vidur.config.model_config import BaseModelConfig
 logger = init_logger(__name__)
 
 
@@ -34,12 +34,14 @@ class SklearnExecutionTimePredictor(BaseExecutionTimePredictor):
         replica_config: ReplicaConfig,
         replica_scheduler_config: BaseReplicaSchedulerConfig,
         metrics_config: MetricsConfig,
+        model_config : BaseModelConfig
     ) -> None:
         super().__init__(
             predictor_config=predictor_config,
             replica_config=replica_config,
             replica_scheduler_config=replica_scheduler_config,
             metrics_config=metrics_config,
+            model_config=model_config
         )
         os.makedirs(self._cache_dir, exist_ok=True)
 

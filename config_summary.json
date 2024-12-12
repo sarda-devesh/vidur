@@ -1,0 +1,158 @@
+{
+    "2": {
+        "Input Balance,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_ib/2024-12-09_02-27-19-632147",
+            "-",
+            "tab:red"
+        ],
+        "Input Balance,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_ib/2024-12-09_02-27-19-681842",
+            "--",
+            "tab:red"
+        ],
+        "Lor,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_lor/2024-12-09_02-27-19-659774",
+            "-",
+            "tab:purple"
+        ],
+        "Lor,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_lor/2024-12-09_02-27-19-793146",
+            "--",
+            "tab:purple"
+        ],
+        "Output Balance,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_ob/2024-12-09_02-27-19-715805",
+            "-",
+            "tab:blue"
+        ],
+        "Output Balance,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_ob/2024-12-09_02-27-19-731381",
+            "--",
+            "tab:blue"
+        ],
+        "Random,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_rand/2024-12-09_02-27-19-636332",
+            "-",
+            "tab:orange"
+        ],
+        "Random,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_rand/2024-12-09_02-27-19-768601",
+            "--",
+            "tab:orange"
+        ],
+        "Round Robin,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_rr/2024-12-09_02-27-19-638994",
+            "-",
+            "tab:green"
+        ],
+        "Round Robin,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_rr/2024-12-09_02-27-19-791515",
+            "--",
+            "tab:green"
+        ]
+    },
+    "4": {
+        "Input Balance,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_ib/2024-12-09_02-26-44-239034",
+            "-",
+            "tab:red"
+        ],
+        "Input Balance,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_ib/2024-12-09_02-26-44-330627",
+            "--",
+            "tab:red"
+        ],
+        "Lor,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_lor/2024-12-09_02-26-44-386039",
+            "-",
+            "tab:purple"
+        ],
+        "Lor,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_lor/2024-12-09_02-26-44-204580",
+            "--",
+            "tab:purple"
+        ],
+        "Output Balance,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_ob/2024-12-09_02-26-44-298302",
+            "-",
+            "tab:blue"
+        ],
+        "Output Balance,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_ob/2024-12-09_02-26-44-235988",
+            "--",
+            "tab:blue"
+        ],
+        "Random,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_rand/2024-12-09_02-26-44-252391",
+            "-",
+            "tab:orange"
+        ],
+        "Random,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_rand/2024-12-09_02-26-44-185251",
+            "--",
+            "tab:orange"
+        ],
+        "Round Robin,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_rr/2024-12-09_02-26-44-273650",
+            "-",
+            "tab:green"
+        ],
+        "Round Robin,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_rr/2024-12-09_02-26-44-189932",
+            "--",
+            "tab:green"
+        ]
+    },
+    "8": {
+        "Input Balance,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_ib/2024-12-09_02-25-41-893204",
+            "-",
+            "tab:red"
+        ],
+        "Input Balance,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_ib/2024-12-09_02-25-41-920345",
+            "--",
+            "tab:red"
+        ],
+        "Lor,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_lor/2024-12-09_02-25-41-871879",
+            "-",
+            "tab:purple"
+        ],
+        "Lor,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_lor/2024-12-09_02-25-41-891338",
+            "--",
+            "tab:purple"
+        ],
+        "Output Balance,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_ob/2024-12-09_02-25-42-037323",
+            "-",
+            "tab:blue"
+        ],
+        "Output Balance,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_ob/2024-12-09_02-25-42-031565",
+            "--",
+            "tab:blue"
+        ],
+        "Random,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_rand/2024-12-09_02-25-41-898483",
+            "-",
+            "tab:orange"
+        ],
+        "Random,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_rand/2024-12-09_02-25-41-995319",
+            "--",
+            "tab:orange"
+        ],
+        "Round Robin,Llama-2-7b-hf": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama2-7b_rr/2024-12-09_02-25-41-915469",
+            "-",
+            "tab:green"
+        ],
+        "Round Robin,Meta-Llama-3-8B": [
+            "/Users/deveshsarda/Library/CloudStorage/OneDrive-Personal/Fall2024/Distributed Systems/Final_Metrics/vidur_metrics_output_llama3-8b_rr/2024-12-09_02-25-41-903977",
+            "--",
+            "tab:green"
+        ]
+    }
+}

@@ -55,7 +55,7 @@ class MetricsStore:
         self._last_request_arrived_at = None
 
         # copy config
-        self._num_replicas = self._simulation_config.cluster_config.num_replicas
+        self._num_replicas = sum(self._simulation_config.cluster_config.num_replicas)
         self._num_pipeline_stages = (
             self._simulation_config.cluster_config.replica_config.num_pipeline_stages
         )
