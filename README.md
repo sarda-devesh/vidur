@@ -183,5 +183,5 @@ $ python -m vidur.main --replica_config_device a100 --replica_config_model_name 
 
 Example request:
 ```
-$ python -m vidur.main --replica_config_model_name meta-llama/Meta-Llama-3-8B meta-llama/Llama-2-7b-hf --cluster_config_num_replicas 2 1 --metrics_config_output_dir multi_simulator_output
+$ python -m vidur.main --replica_config_model_name meta-llama/Meta-Llama-3-8B meta-llama/Llama-2-7b-hf --cluster_config_num_replicas 2 1 --metrics_config_output_dir multi_simulator_output --synthetic_request_generator_config_num_requests 1024
 ```
