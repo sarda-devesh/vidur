@@ -418,9 +418,6 @@ class MetricsConfig:
     )
 
     def __post_init__(self):
-        self.output_dir = (
-            f"{self.output_dir}/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')}"
-        )
         os.makedirs(self.output_dir, exist_ok=True)
 
 

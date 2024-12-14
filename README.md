@@ -195,3 +195,13 @@ Combined requests scheduling:
 ```
 $ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config combined_balanced --combined_global_scheduler_config_alpha 0.75 --combined_global_scheduler_config_beta 0.25
 ```
+
+Replaying a trace:
+```
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --request_generator_config_type trace_replay --trace_request_generator_config_trace_file "/ssd/dsarda/vidur/data/processed_traces/splitwise_conv.csv" --metrics_config_output_dir temp_output
+```
+
+Paramter scan code:
+```
+$ python parameter_scan.py --config_dir /ssd/dsarda/virdur_results/parameter_scan_config --results_dir /ssd/dsarda/virdur_results/parameter_scan_results --mode run
+``
