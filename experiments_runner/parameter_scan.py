@@ -32,7 +32,8 @@ def create_scan_configs(args):
     }, args.config_dir)
 
 def run_experiment(args):
-    run_all_configs_in_dir(args)
+    num_workers = int(os.cpu_count()/5)
+    run_all_configs_in_dir(args, num_workers)
 
 def plot_results(args):
     print("Plot results called with args", args)

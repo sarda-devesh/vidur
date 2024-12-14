@@ -4,6 +4,7 @@ import json
 import itertools
 import argparse
 import hashlib
+from multiprocessing import Pool
 
 DEFAULT_CONFIGS = {
     "cluster_config" : {
@@ -146,11 +147,18 @@ def run_for_config(config_file, args):
         result = subprocess.run(command_to_run, shell = True, capture_output = True, text = True)
     finally:
         os.chdir(current_dir)
+    
+    return True
 
-def run_all_configs_in_dir(args):
+def run_all_configs_in_dir(args, num_workers = 5):
+    configs_to_runs = []
     for file_name in os.listdir(args.config_dir):
         if "json" not in file_name:
             continue
         
         config_path = os.path.join(args.config_dir, file_name)
-        run_for_config(config_path, args)
+        configs_to_runs.append((config_path, args))
+    
+    # Create the worker pool
+    with Pool(num_workers) as worker_pool:
+        worker_pool.starmap(run_for_config, configs_to_runs)
