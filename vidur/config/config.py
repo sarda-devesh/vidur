@@ -490,6 +490,22 @@ class LORGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
         return GlobalSchedulerType.LOR
 
 @dataclass
+class LorBatchedGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
+    max_bin_size: int = field(
+        default = 5,
+        metadata={"help": "The maximum bin size to when creating the batched"},
+    )
+
+    binning_timeout: float = field(
+        default = 0.5,
+        metadata={"help": "The timeout to use when determining when to stop the current bin"},
+    )
+
+    @staticmethod
+    def get_type():
+        return GlobalSchedulerType.LOR_BATCHED
+
+@dataclass
 class InputGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
     @staticmethod
     def get_type():
@@ -500,6 +516,22 @@ class OutputGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
     @staticmethod
     def get_type():
         return GlobalSchedulerType.OUTPUT_BALANCE
+
+@dataclass
+class CombinedGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
+    alpha: float = field(
+        default = 0.5,
+        metadata={"help": "The alpha to use for the input weight"},
+    )
+
+    beta: float = field(
+        default = 0.5,
+        metadata={"help": "The beta to use for the output weight"},
+    )
+
+    @staticmethod
+    def get_type():
+        return GlobalSchedulerType.COMBINED_BALANCED
 
 @dataclass
 class BaseExecutionTimePredictorConfig(BasePolyConfig):

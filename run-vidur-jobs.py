@@ -182,21 +182,18 @@ def job_runner(command_to_run):
     return True
 
 def main(filename, base_output_dir, schedulers, run = False):
-    '''
-    arguments = []
-    processes = []
-    with open(filename, 'r') as file:
-        config = json.load(file)['config']
-        for sched in schedulers:
-            args, args_2 = read_json_config(config, base_output_dir, sched)
-            arguments.append(" ".join(args))
-            arguments.append(" ".join(args_2))
-
     if (run):
+        arguments = []
+        with open(filename, 'r') as file:
+            config = json.load(file)['config']
+            for sched in schedulers:
+                args, args_2 = read_json_config(config, base_output_dir, sched)
+                arguments.append(" ".join(args))
+                arguments.append(" ".join(args_2))
+
         num_workers = int(os.cpu_count()/4)
         with Pool(num_workers) as pool:
             print(pool.map(job_runner, arguments))
-    '''
 
     plot_metrics(config, base_output_dir, schedulers)
 

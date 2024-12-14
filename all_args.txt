@@ -8,6 +8,10 @@ usage: main.py [-h] [--seed SEED] [--log_level LOG_LEVEL]
                [--replica_config_device REPLICA_CONFIG_DEVICE]
                [--replica_config_network_device REPLICA_CONFIG_NETWORK_DEVICE]
                [--global_scheduler_config_type GLOBAL_SCHEDULER_CONFIG_TYPE]
+               [--lor_batched_global_scheduler_config_max_bin_size LOR_BATCHED_GLOBAL_SCHEDULER_CONFIG_MAX_BIN_SIZE]
+               [--lor_batched_global_scheduler_config_binning_timeout LOR_BATCHED_GLOBAL_SCHEDULER_CONFIG_BINNING_TIMEOUT]
+               [--combined_global_scheduler_config_alpha COMBINED_GLOBAL_SCHEDULER_CONFIG_ALPHA]
+               [--combined_global_scheduler_config_beta COMBINED_GLOBAL_SCHEDULER_CONFIG_BETA]
                [--replica_scheduler_config_type REPLICA_SCHEDULER_CONFIG_TYPE]
                [--vllm_scheduler_config_batch_size_cap VLLM_SCHEDULER_CONFIG_BATCH_SIZE_CAP]
                [--vllm_scheduler_config_block_size VLLM_SCHEDULER_CONFIG_BLOCK_SIZE]
@@ -163,6 +167,16 @@ options:
                         Network device. (default: a100_pairwise_nvlink)
   --global_scheduler_config_type GLOBAL_SCHEDULER_CONFIG_TYPE
                         Global scheduler config. (default: round_robin)
+  --lor_batched_global_scheduler_config_max_bin_size LOR_BATCHED_GLOBAL_SCHEDULER_CONFIG_MAX_BIN_SIZE
+                        The maximum bin size to when creating the batched
+                        (default: 5)
+  --lor_batched_global_scheduler_config_binning_timeout LOR_BATCHED_GLOBAL_SCHEDULER_CONFIG_BINNING_TIMEOUT
+                        The timeout to use when determining when to stop the
+                        current bin (default: 0.5)
+  --combined_global_scheduler_config_alpha COMBINED_GLOBAL_SCHEDULER_CONFIG_ALPHA
+                        The alpha to use for the input weight (default: 0.5)
+  --combined_global_scheduler_config_beta COMBINED_GLOBAL_SCHEDULER_CONFIG_BETA
+                        The beta to use for the output weight (default: 0.5)
   --replica_scheduler_config_type REPLICA_SCHEDULER_CONFIG_TYPE
                         Replica scheduler config. (default: sarathi)
   --vllm_scheduler_config_batch_size_cap VLLM_SCHEDULER_CONFIG_BATCH_SIZE_CAP

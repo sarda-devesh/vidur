@@ -174,7 +174,7 @@ $ mamba activate /ssd/dsarda/vidur/env
 
 CLI vary arguments:
 ```
-$ python -m vidur.main --global_scheduler_config lor
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config lor
 $ python -m vidur.main --global_scheduler_config random
 $ python -m vidur.main --global_scheduler_config round_robin
 $ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config input_balance
@@ -183,5 +183,15 @@ $ python -m vidur.main --replica_config_device a100 --replica_config_model_name 
 
 Example request:
 ```
-$ python -m vidur.main --replica_config_model_name meta-llama/Meta-Llama-3-8B meta-llama/Llama-2-7b-hf --cluster_config_num_replicas 2 1 --metrics_config_output_dir multi_simulator_output --synthetic_request_generator_config_num_requests 1024
+$ python -m vidur.main --replica_config_model_name meta-llama/Meta-Llama-3-8B meta-llama/Llama-2-7b-hf --cluster_config_num_replicas 2 1 --metrics_config_output_dir multi_simulator_output --synthetic_request_generator_config_num_requests 4096 --request_generator_config_type synthetic --length_generator_config_type zipf --zipf_request_length_generator_config_theta 0.95 --global_scheduler_config_type lor_batched
+```
+
+Batched request scheduling:
+```
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config lor_batched --lor_batched_global_scheduler_config_max_bin_size 4 --lor_batched_global_scheduler_config_binning_timeout 0.25 
+```
+
+Combined requests scheduling:
+```
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 --global_scheduler_config combined_balanced --combined_global_scheduler_config_alpha 0.75 --combined_global_scheduler_config_beta 0.25
 ```

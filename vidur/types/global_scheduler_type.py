@@ -5,5 +5,7 @@ class GlobalSchedulerType(BaseIntEnum):
     RANDOM = 1
     ROUND_ROBIN = 2
     LOR = 3
-    INPUT_BALANCE = 4
-    OUTPUT_BALANCE = 5
+    LOR_BATCHED = 4
+    INPUT_BALANCE = 5
+    OUTPUT_BALANCE = 6
+    COMBINED_BALANCED = 7
