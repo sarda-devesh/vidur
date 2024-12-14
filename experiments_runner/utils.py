@@ -5,6 +5,7 @@ import itertools
 import argparse
 import hashlib
 from multiprocessing import Pool
+import shutil
 
 DEFAULT_CONFIGS = {
     "cluster_config" : {
@@ -137,6 +138,10 @@ def run_for_config(config_file, args):
         save_dir = os.path.join(args.results_dir, config_name)
         os.makedirs(save_dir, exist_ok = True)
         command_params["metrics_config_output_dir"] = save_dir
+
+        # Save the json to the directory
+        json_copy_path = os.path.join(save_dir, "request_config_summary.json")
+        shutil.copy(config_file, json_copy_path)
         
         # Run the command
         command_params_txt = [

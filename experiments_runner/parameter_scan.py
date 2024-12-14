@@ -1,5 +1,4 @@
 from utils import *
-import shutil
 
 def create_scan_configs(args):
     # Get the configs for batched

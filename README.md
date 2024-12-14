@@ -204,4 +204,5 @@ $ python -m vidur.main --replica_config_device a100 --replica_config_model_name 
 Paramter scan code:
 ```
 $ python parameter_scan.py --config_dir /ssd/dsarda/virdur_results/parameter_scan_config --results_dir /ssd/dsarda/virdur_results/parameter_scan_results --mode run
+$ python parameter_scan.py --config_dir /ssd/dsarda/virdur_results/parameter_scan_config --results_dir /ssd/dsarda/virdur_results/parameter_scan_results --mode plot
 ``
