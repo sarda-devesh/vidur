@@ -206,3 +206,15 @@ Paramter scan code:
 $ python parameter_scan.py --config_dir /ssd/dsarda/virdur_results/parameter_scan_config --results_dir /ssd/dsarda/virdur_results/parameter_scan_results --mode run
 $ python parameter_scan.py --config_dir /ssd/dsarda/virdur_results/parameter_scan_config --results_dir /ssd/dsarda/virdur_results/parameter_scan_results --mode plot
 ``
+
+Combined parameter sweep:
+```
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Llama-2-7b-hf meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 1 --global_scheduler_config combined_balanced --combined_global_scheduler_config_alpha 0.5 --combined_global_scheduler_config_beta 1.0 --request_generator_config_type trace_replay --trace_request_generator_config_trace_file /ssd/dsarda/vidur/data/processed_traces/splitwise_conv.csv --metrics_config_output_dir first_combo_results &> first_combo.log
+
+$ python -m vidur.main --replica_config_device a100 --replica_config_model_name meta-llama/Llama-2-7b-hf meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 2 1 --global_scheduler_config combined_balanced --combined_global_scheduler_config_alpha 0.25 --combined_global_scheduler_config_beta 0.0 --request_generator_config_type trace_replay --trace_request_generator_config_trace_file /ssd/dsarda/vidur/data/processed_traces/splitwise_conv.csv --metrics_config_output_dir second_combo_results &> second_combo.log
+```
+
+Same Instance Experiment:
+```
+$ python same_instance_experiment.py --config_dir /ssd/dsarda/virdur_results/same_instance_configs --results_dir /ssd/dsarda/virdur_results/same_instance_results --mode create
+```

@@ -129,7 +129,6 @@ def run_for_config(config_file, args):
     os.chdir("/ssd/dsarda/vidur")
     try:
         # First get the command parameters
-        print("Running command for config", config_file)
         command_params = get_command_for_config(config_file)
 
         # Add in the save path
@@ -149,6 +148,7 @@ def run_for_config(config_file, args):
             for key, value in command_params.items()
         ]
         command_to_run = "python -m vidur.main " + " ".join(command_params_txt)
+        print("Running command", command_to_run)
         result = subprocess.run(command_to_run, shell = True, capture_output = True, text = True)
     finally:
         os.chdir(current_dir)
@@ -167,3 +167,20 @@ def run_all_configs_in_dir(args, num_workers = 5):
     # Create the worker pool
     with Pool(num_workers) as worker_pool:
         worker_pool.starmap(run_for_config, configs_to_runs)
+
+# Constants for graph generation
+LOAD_BALANCING_COLOR_MAPPING = {
+    "random" : "tab:blue",
+    "round_robin" : "tab:orange",
+    "lor" : "tab:green",
+    "lor_batched" : "tab:red",
+    "combined_balanced" : "tab:purple"
+}
+MODEl_NAME_LINE_MAPPING = {
+    "meta-llama/Llama-2-7b-hf" : "-",
+    "meta-llama/Meta-Llama-3-8B" : "--"
+}
+METRIC_NAME_MAPPING = {
+    "request_e2e_time" : "Request End to End Time",
+    "prefill_e2e_time" : "Time to First Token"
+}

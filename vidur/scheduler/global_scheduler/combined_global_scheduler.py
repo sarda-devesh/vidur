@@ -6,7 +6,7 @@ from vidur.scheduler.global_scheduler.base_global_scheduler import BaseGlobalSch
 class CombinedReplicaWorkDone:
     def __init__(self, replica_id):
         self.replica_id = replica_id
-        self.work_done = 0
+        self.work_done = 0.0
     
     def __repr__(self):
         return f'Replica {self.replica_id} Work Done {self.work_done}'
@@ -26,6 +26,7 @@ class CombinedGlobalScheduler(BaseGlobalScheduler):
         scheduler_config : CombinedGlobalSchedulerConfig = self._config.cluster_config.global_scheduler_config
         self.alpha = scheduler_config.alpha
         self.beta = scheduler_config.beta
+        self.count = 0
         print("Initialized the output global scheduler with", len(self.workers), "replicas and factors", self.alpha, self.beta)
 
     def schedule(self) -> List[Tuple[int, Request]]:
@@ -35,7 +36,7 @@ class CombinedGlobalScheduler(BaseGlobalScheduler):
         while self._request_queue:
             request = self._request_queue.pop(0)
             request_input_size, request_output_size = request.size
-            request_cost = self.alpha * request_input_size + self.beta * request_output_size
+            request_cost = 1.0 * self.alpha * request_input_size + 1.0 * self.beta * request_output_size
             
             # Assign the current job to the worker who has done the least amount of worker
             curr_worker = self.workers[0]
@@ -45,4 +46,6 @@ class CombinedGlobalScheduler(BaseGlobalScheduler):
             curr_worker.work_done += request_cost
             heapq.heapify(self.workers)
 
+        self.count += 1
+        print("For count", self.count, "got request mapping of", request_mapping)
         return request_mapping
