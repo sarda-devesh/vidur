@@ -183,7 +183,7 @@ $ python -m vidur.main --replica_config_device a100 --replica_config_model_name 
 
 Example request:
 ```
-$ python -m vidur.main --replica_config_model_name meta-llama/Meta-Llama-3-8B meta-llama/Llama-2-7b-hf --cluster_config_num_replicas 2 1 --metrics_config_output_dir multi_simulator_output --synthetic_request_generator_config_num_requests 4096 --request_generator_config_type synthetic --length_generator_config_type zipf --zipf_request_length_generator_config_theta 0.95 --global_scheduler_config_type lor_batched
+$ python -m vidur.main --replica_config_model_name meta-llama/Meta-Llama-3-8B --cluster_config_num_replicas 4 --metrics_config_output_dir multi_instance_output --synthetic_request_generator_config_num_requests 8192 --request_generator_config_type synthetic --length_generator_config_type zipf --zipf_request_length_generator_config_theta 0.95 --global_scheduler_config_type lor_batched --zipf_request_length_generator_config_max_tokens 2048
 ```
 
 Batched request scheduling:
@@ -217,4 +217,14 @@ $ python -m vidur.main --replica_config_device a100 --replica_config_model_name 
 Same Instance Experiment:
 ```
 $ python same_instance_experiment.py --config_dir /ssd/dsarda/virdur_results/same_instance_configs --results_dir /ssd/dsarda/virdur_results/same_instance_results --mode create
+```
+
+Different Instances Experiments:
+```
+$ python different_instances_experiment.py --config_dir /ssd/dsarda/virdur_results/different_instances_configs --results_dir /ssd/dsarda/virdur_results/different_instances_results --mode create
+```
+
+MFU Scaling Experiment:
+```
+$ python mfu_scaling_experiment.py --config_dir /ssd/dsarda/virdur_results/mfu_scaling_configs --results_dir /ssd/dsarda/virdur_results/mfu_scaling_results --mode create
 ```

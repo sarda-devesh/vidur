@@ -57,7 +57,7 @@ def write_configs_to_dir(config_combos, config_dir):
         with open(save_path, "w+") as writer:
             json.dump(curr_combo, writer, indent=4, sort_keys=True)
 
-def get_workload_config(config_type, num_requests = 1024):
+def get_workload_config(config_type, num_requests = 1024, max_tokens = 2048):
     if config_type == "trace":
         return {
             "workload_type" : "trace",
@@ -66,13 +66,15 @@ def get_workload_config(config_type, num_requests = 1024):
     elif config_type == "zipfian":
         return {
             "workload_type" : "zipfian",
-            "zipf_theta" : 0.99,
-            "num_requests" : num_requests
+            "zipf_theta" : 0.95,
+            "num_requests" : num_requests,
+            "max_tokens" : max_tokens
         }
     elif config_type == "synthetic":
         return {
             "workload_type" : "synthetic",
-            "num_requests" : num_requests
+            "num_requests" : num_requests,
+            "max_tokens" : max_tokens
         }
 
 def read_arguments():
@@ -108,9 +110,14 @@ def record_workload_type(workload_config_data, command_params):
     else:
         command_params["request_generator_config_type"] = "synthetic"
         command_params["synthetic_request_generator_config_num_requests"] = workload_config_data["num_requests"]
+        max_tokens = workload_config_data["max_tokens"]
         if workload_type == "zipfian":
             command_params["length_generator_config_type"] = "zipf"
             command_params["zipf_request_length_generator_config_theta"] = workload_config_data["zipf_theta"]
+            command_params["zipf_request_length_generator_config_max_tokens"] = max_tokens
+        else:
+            command_params["length_generator_config_type"] = "uniform"
+            command_params["uniform_request_length_generator_config_max_tokens"] = max_tokens
 
 def get_command_for_config(config_file):
     with open(config_file, 'r') as reader:
@@ -176,11 +183,23 @@ LOAD_BALANCING_COLOR_MAPPING = {
     "lor_batched" : "tab:red",
     "combined_balanced" : "tab:purple"
 }
+
 MODEl_NAME_LINE_MAPPING = {
     "meta-llama/Llama-2-7b-hf" : "-",
     "meta-llama/Meta-Llama-3-8B" : "--"
 }
+
 METRIC_NAME_MAPPING = {
     "request_e2e_time" : "Request End to End Time",
     "prefill_e2e_time" : "Time to First Token"
+}
+
+WORKLOAD_LINE_MAPPING = {
+    "trace" : "-",
+    "zipfian" : "--"
+}
+
+WORKLOAD_SHADING_MAPPING = {
+    "trace" : "-",
+    "zipfian" : "//"
 }

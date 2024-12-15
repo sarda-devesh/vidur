@@ -13,12 +13,16 @@ def create_scan_configs(args):
     # Set the replica config
     all_replica_configs = [
         {
-            "replica_names" : ["meta-llama/Llama-2-7b-hf"],
-            "replica_counts" : [4]
+            "replica_names" : ["meta-llama/Llama-2-7b-hf", "meta-llama/Meta-Llama-3-8B"],
+            "replica_counts" : [3, 1]
         }, 
         {
-            "replica_names" : ["meta-llama/Meta-Llama-3-8B"],
-            "replica_counts" : [4]
+            "replica_names" : ["meta-llama/Llama-2-7b-hf", "meta-llama/Meta-Llama-3-8B"],
+            "replica_counts" : [2, 2]
+        },
+        {
+            "replica_names" : ["meta-llama/Llama-2-7b-hf", "meta-llama/Meta-Llama-3-8B"],
+            "replica_counts" : [1, 3]
         }
     ]
 
@@ -56,9 +60,10 @@ def run_experiment(args):
     num_workers = int(os.cpu_count()/2)
     run_all_configs_in_dir(args, num_workers)
 
-def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
+def plot_subplot(args, axis, target_replica_counts, metric_name, metric_range):
     metric_title = METRIC_NAME_MAPPING[metric_name]
-    all_rows = []
+    curr_axis_title = f'CDF of {metric_title} with ({target_replica_counts[0]}x Llama-2-7B, {target_replica_counts[1]}x Llama-3-8B)'
+
     for dir_name in os.listdir(args.results_dir):
         dir_path = os.path.join(args.results_dir, dir_name)
         if not os.path.isdir(dir_path):
@@ -70,13 +75,13 @@ def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
             curr_request_summary = json.load(reader)
         
         # Ensure the correct workload type
-        workload_type = curr_request_summary["workload_config"]["workload_type"]
-        if workload_type != target_workload_type:
+        replica_counts = curr_request_summary["replica_config"]["replica_counts"]
+        if replica_counts != target_replica_counts:
             continue
         
         # Get the linestyle
-        model_type = curr_request_summary["replica_config"]["replica_names"][0]
-        line_type = MODEl_NAME_LINE_MAPPING[model_type]
+        workload_type = curr_request_summary["workload_config"]["workload_type"]
+        line_type = WORKLOAD_LINE_MAPPING[workload_type]
 
         # Get the color
         scheduler_type = curr_request_summary["scheduler_config"]["scheduler_type"]
@@ -89,25 +94,24 @@ def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
         metrics_values = metrics_df[metric_name].values
 
         # Plot the line 
-        line_label = model_type + " with " + scheduler_label + " balancer"
+        line_label = workload_type.title() + " workload with " + scheduler_label + " balancer"
         axis.ecdf(metrics_values, color = line_color, linestyle = line_type, label = line_label)
-    
+
     axis.set_xlim(metric_range)
     axis.set_ylim((0.9, 1.0))
     axis.legend(fontsize = 11)
     axis.set_xlabel(metric_title, fontsize = 14)
     axis.set_ylabel("Factor of requests", fontsize = 14)
-    axis.set_title(f'CDF of {metric_title} with 4 instances for {target_workload_type.title()} workload', fontsize = 16)
+    axis.set_title(curr_axis_title, fontsize = 16)
 
 def plot_results(args):
-    fig, axes = plt.subplots(2, 2, figsize = (20, 10), sharey = True)
-    plot_subplot(args, axes[0, 0], "request_e2e_time", "trace", (5, 20))
-    plot_subplot(args, axes[0, 1], "prefill_e2e_time", "trace", (0.2, 1.2))
-    plot_subplot(args, axes[1, 0], "request_e2e_time", "zipfian", (20, 35))
-    plot_subplot(args, axes[1, 1], "prefill_e2e_time", "zipfian", (0.15, 0.4))
+    fig, axes = plt.subplots(1, 3, figsize = (30, 5), sharey = True)
+    plot_subplot(args, axes[0], [1, 3], "request_e2e_time", (0, 35))
+    plot_subplot(args, axes[1], [2, 2], "request_e2e_time", (0, 35))
+    plot_subplot(args, axes[2], [3, 1], "request_e2e_time", (0, 35))
 
     # Save the result
-    fig.suptitle('CDF of Key Metrics for Different Balancers', fontsize = 24)
+    fig.suptitle('CDF of Request Time for Different Model Configurations', fontsize = 24)
     fig.tight_layout()
     save_path = os.path.join(args.results_dir, "experiment_result.png")
     plt.savefig(save_path, dpi = 300)

@@ -13,12 +13,16 @@ def create_scan_configs(args):
     # Set the replica config
     all_replica_configs = [
         {
-            "replica_names" : ["meta-llama/Llama-2-7b-hf"],
-            "replica_counts" : [4]
+            "replica_names" : ["meta-llama/Llama-2-7b-hf", "meta-llama/Meta-Llama-3-8B"],
+            "replica_counts" : [1, 1]
         }, 
         {
-            "replica_names" : ["meta-llama/Meta-Llama-3-8B"],
-            "replica_counts" : [4]
+            "replica_names" : ["meta-llama/Llama-2-7b-hf", "meta-llama/Meta-Llama-3-8B"],
+            "replica_counts" : [2, 2]
+        },
+        {
+            "replica_names" : ["meta-llama/Llama-2-7b-hf", "meta-llama/Meta-Llama-3-8B"],
+            "replica_counts" : [4, 4]
         }
     ]
 
@@ -56,9 +60,28 @@ def run_experiment(args):
     num_workers = int(os.cpu_count()/2)
     run_all_configs_in_dir(args, num_workers)
 
-def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
-    metric_title = METRIC_NAME_MAPPING[metric_name]
-    all_rows = []
+def get_average_mfu_values(plots_dir):
+    total_mfu_value, curr_count = 0.0, 0
+    for file_name in os.listdir(plots_dir):
+        if "_mfu.json" not in file_name:
+            continue
+        
+        # Read the json
+        mfu_path = os.path.join(plots_dir, file_name)
+        with open(mfu_path, 'r') as reader:
+            mfu_data = json.load(reader)
+        
+        for metric_name in mfu_data:
+            if "mean" in metric_name:
+                total_mfu_value += mfu_data[metric_name]
+                curr_count += 1
+    
+    return 0.0 if curr_count == 0 else (1.0 * total_mfu_value)/curr_count
+
+
+def plot_results(args):
+    plt.figure(figsize=(12, 5))
+    values_to_plot = {}
     for dir_name in os.listdir(args.results_dir):
         dir_path = os.path.join(args.results_dir, dir_name)
         if not os.path.isdir(dir_path):
@@ -69,46 +92,51 @@ def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
         with open(request_summary_path, 'r') as reader:
             curr_request_summary = json.load(reader)
         
-        # Ensure the correct workload type
+        # Get the values for the bar chart
+        replica_count = curr_request_summary["replica_config"]["replica_counts"][0]
+        average_mfu_value = get_average_mfu_values(os.path.join(dir_path, "plots"))
+
+        # Get the key name
         workload_type = curr_request_summary["workload_config"]["workload_type"]
-        if workload_type != target_workload_type:
-            continue
-        
-        # Get the linestyle
-        model_type = curr_request_summary["replica_config"]["replica_names"][0]
-        line_type = MODEl_NAME_LINE_MAPPING[model_type]
-
-        # Get the color
         scheduler_type = curr_request_summary["scheduler_config"]["scheduler_type"]
-        line_color = LOAD_BALANCING_COLOR_MAPPING[scheduler_type]
         scheduler_label = scheduler_type.replace("_", " ").title()
+        key_name = workload_type.title() + " workload with " + scheduler_label + " balancer"
 
-        # Get the metrics
-        metrics_path = os.path.join(dir_path, "request_metrics.csv")
-        metrics_df = pd.read_csv(metrics_path)
-        metrics_values = metrics_df[metric_name].values
+        # Record the value
+        if key_name not in values_to_plot:
+            values_to_plot[key_name] = [
+                LOAD_BALANCING_COLOR_MAPPING[scheduler_type], 
+                WORKLOAD_SHADING_MAPPING[workload_type],
+                [0.0, 0.0, 0.0]
+            ]
+        values_to_plot[key_name][2][replica_count // 2] = average_mfu_value
 
-        # Plot the line 
-        line_label = model_type + " with " + scheduler_label + " balancer"
-        axis.ecdf(metrics_values, color = line_color, linestyle = line_type, label = line_label)
+    # Graph the values
+    x_labels = [1, 2, 4]
+    x = 2 * np.arange(len(x_labels))
+    width = 0.15
+    multiplier = 0
+
+    curr_attributes = list(values_to_plot.keys())
+    curr_attributes.sort(key = lambda name : name.split(" ")[3])
+    print(curr_attributes)
+    for attribute in curr_attributes:
+        attribute_values = values_to_plot[attribute]
+        curr_color, shading, measurement = attribute_values[0], attribute_values[1], attribute_values[2]
+        offset = width * multiplier
+        plt.bar(x + offset, measurement, width, label = attribute, color = curr_color, hatch = shading)
+        multiplier += 1
     
-    axis.set_xlim(metric_range)
-    axis.set_ylim((0.9, 1.0))
-    axis.legend(fontsize = 11)
-    axis.set_xlabel(metric_title, fontsize = 14)
-    axis.set_ylabel("Factor of requests", fontsize = 14)
-    axis.set_title(f'CDF of {metric_title} with 4 instances for {target_workload_type.title()} workload', fontsize = 16)
-
-def plot_results(args):
-    fig, axes = plt.subplots(2, 2, figsize = (20, 10), sharey = True)
-    plot_subplot(args, axes[0, 0], "request_e2e_time", "trace", (5, 20))
-    plot_subplot(args, axes[0, 1], "prefill_e2e_time", "trace", (0.2, 1.2))
-    plot_subplot(args, axes[1, 0], "request_e2e_time", "zipfian", (20, 35))
-    plot_subplot(args, axes[1, 1], "prefill_e2e_time", "zipfian", (0.15, 0.4))
-
+    # Set the labels
+    label_offset = width * len(values_to_plot)/2.0
+    plt.xticks(x + label_offset, x_labels)
+    plt.xlabel("Number of Instances")
+    plt.ylabel("Model MFU Utilization")
+    plt.legend()
+    plt.title("Average MFU Utilization with Instance Scaling")
+    plt.tight_layout()
+    
     # Save the result
-    fig.suptitle('CDF of Key Metrics for Different Balancers', fontsize = 24)
-    fig.tight_layout()
     save_path = os.path.join(args.results_dir, "experiment_result.png")
     plt.savefig(save_path, dpi = 300)
 

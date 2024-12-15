@@ -138,7 +138,7 @@ class ZipfRequestLengthGeneratorConfig(BaseRequestLengthGeneratorConfig):
         metadata={"help": "Theta for Zipf Request Length Generator."},
     )
     scramble: bool = field(
-        default=False,
+        default=True,
         metadata={"help": "Scramble for Zipf Request Length Generator."},
     )
     min_tokens: int = field(
