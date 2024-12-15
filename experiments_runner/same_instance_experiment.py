@@ -56,7 +56,7 @@ def run_experiment(args):
     num_workers = int(os.cpu_count()/2)
     run_all_configs_in_dir(args, num_workers)
 
-def plot_subplot(args, axis, metric_name, target_workload_type):
+def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
     metric_title = METRIC_NAME_MAPPING[metric_name]
     all_rows = []
     for dir_name in os.listdir(args.results_dir):
@@ -92,6 +92,7 @@ def plot_subplot(args, axis, metric_name, target_workload_type):
         line_label = model_type + " with " + scheduler_label + " balancer"
         axis.ecdf(metrics_values, color = line_color, linestyle = line_type, label = line_label)
     
+    axis.set_xlim(metric_range)
     axis.set_ylim((0.9, 1.0))
     axis.legend(fontsize = 11)
     axis.set_xlabel(metric_title, fontsize = 14)
@@ -100,10 +101,10 @@ def plot_subplot(args, axis, metric_name, target_workload_type):
 
 def plot_results(args):
     fig, axes = plt.subplots(2, 2, figsize = (20, 10), sharey = True)
-    plot_subplot(args, axes[0, 0], "request_e2e_time", "trace")
-    plot_subplot(args, axes[0, 1], "prefill_e2e_time", "trace")
-    plot_subplot(args, axes[1, 0], "request_e2e_time", "zipfian")
-    plot_subplot(args, axes[1, 1], "prefill_e2e_time", "zipfian")
+    plot_subplot(args, axes[0, 0], "request_e2e_time", "trace", (5, 20))
+    plot_subplot(args, axes[0, 1], "prefill_e2e_time", "trace", (0.2, 1.2))
+    plot_subplot(args, axes[1, 0], "request_e2e_time", "zipfian", (1.3, 3.0))
+    plot_subplot(args, axes[1, 1], "prefill_e2e_time", "zipfian", (0.15, 0.4))
 
     # Save the result
     fig.suptitle('CDF of Key Metrics for Different Balancers', fontsize = 24)

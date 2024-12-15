@@ -66,7 +66,7 @@ def get_workload_config(config_type, num_requests = 1024):
     elif config_type == "zipfian":
         return {
             "workload_type" : "zipfian",
-            "zipf_theta" : 0.95,
+            "zipf_theta" : 0.99,
             "num_requests" : num_requests
         }
     elif config_type == "synthetic":
