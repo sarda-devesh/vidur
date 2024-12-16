@@ -99,7 +99,6 @@ def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
     axis.set_ylim((0.9, 1.0))
     axis.xaxis.set_tick_params(labelsize=13)
     axis.yaxis.set_tick_params(labelsize=13)
-    #axis.legend(fontsize = 11)
     axis.set_xlabel(metric_title, fontsize = 16)
     axis.set_ylabel("Factor of requests", fontsize = 16)
     axis.set_title(f'CDF of {metric_title} with 4 instances for {target_workload_type.title()} workload', fontsize = 18)
@@ -113,9 +112,10 @@ def plot_results(args):
     handles,labels = axes[1,1].get_legend_handles_labels()
 
     # Save the result
-    fig.legend(handles, labels, loc=(0.685,0.6), fontsize=12)
     fig.suptitle('CDF of Key Metrics for Different Balancers', fontsize = 24)
     fig.tight_layout()
+    fig.subplots_adjust(bottom = 0.2)
+    fig.legend(handles, labels, loc='lower center', bbox_to_anchor=(0.5, 0.0), ncol = 3, fontsize = 13)
     save_path = os.path.join(args.results_dir, "experiment_result.png")
     plt.savefig(save_path, dpi = 300)
 

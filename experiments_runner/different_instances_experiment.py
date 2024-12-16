@@ -113,10 +113,11 @@ def plot_results(args):
     handles,labels = axes[2].get_legend_handles_labels()
 
     # Save the result
-    legend = fig.legend(handles, labels, loc='outside right upper', bbox_to_anchor=(1,1.5), fontsize=14)
     fig.suptitle('CDF of Request Time for Different Model Configurations', fontsize = 24)
     fig.tight_layout()
-    save_path = os.path.join(args.results_dir, "experiment_resulta.png")
+    fig.subplots_adjust(bottom = 0.25)
+    fig.legend(handles, labels, loc='lower center', bbox_to_anchor=(0.5, -0.05), ncol=len(handles) // 2, fontsize = 13)
+    save_path = os.path.join(args.results_dir, "experiment_result.png")
     print(save_path)
     plt.savefig(save_path, dpi = 300, bbox_inches='tight')
 

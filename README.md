@@ -205,7 +205,7 @@ Paramter scan code:
 ```
 $ python parameter_scan.py --config_dir /ssd/dsarda/virdur_results/parameter_scan_config --results_dir /ssd/dsarda/virdur_results/parameter_scan_results --mode run
 $ python parameter_scan.py --config_dir /ssd/dsarda/virdur_results/parameter_scan_config --results_dir /ssd/dsarda/virdur_results/parameter_scan_results --mode plot
-``
+```
 
 Combined parameter sweep:
 ```
@@ -216,12 +216,12 @@ $ python -m vidur.main --replica_config_device a100 --replica_config_model_name 
 
 Same Instance Experiment:
 ```
-$ python same_instance_experiment.py --config_dir /ssd/dsarda/virdur_results/same_instance_configs --results_dir /ssd/dsarda/virdur_results/same_instance_results --mode create
+$ python same_instance_experiment.py --config_dir /ssd/dsarda/virdur_results/same_instance_configs --results_dir /ssd/dsarda/virdur_results/same_instance_results --mode plot
 ```
 
 Different Instances Experiments:
 ```
-$ python different_instances_experiment.py --config_dir /ssd/dsarda/virdur_results/different_instances_configs --results_dir /ssd/dsarda/virdur_results/different_instances_results --mode create
+$ python different_instances_experiment.py --config_dir /ssd/dsarda/virdur_results/different_instances_configs --results_dir /ssd/dsarda/virdur_results/different_instances_results --mode plot
 ```
 
 MFU Scaling Experiment:
