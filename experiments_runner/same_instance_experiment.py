@@ -5,6 +5,9 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 
+plt.rc('axes', labelsize=16)
+plt.rc('axes', titlesize=16)
+
 def create_scan_configs(args):
     # Create all config details
     num_requests = 8192
@@ -94,10 +97,12 @@ def plot_subplot(args, axis, metric_name, target_workload_type, metric_range):
     
     axis.set_xlim(metric_range)
     axis.set_ylim((0.9, 1.0))
-    axis.legend(fontsize = 11)
-    axis.set_xlabel(metric_title, fontsize = 14)
-    axis.set_ylabel("Factor of requests", fontsize = 14)
-    axis.set_title(f'CDF of {metric_title} with 4 instances for {target_workload_type.title()} workload', fontsize = 16)
+    axis.xaxis.set_tick_params(labelsize=13)
+    axis.yaxis.set_tick_params(labelsize=13)
+    #axis.legend(fontsize = 11)
+    axis.set_xlabel(metric_title, fontsize = 16)
+    axis.set_ylabel("Factor of requests", fontsize = 16)
+    axis.set_title(f'CDF of {metric_title} with 4 instances for {target_workload_type.title()} workload', fontsize = 18)
 
 def plot_results(args):
     fig, axes = plt.subplots(2, 2, figsize = (20, 10), sharey = True)
@@ -105,8 +110,10 @@ def plot_results(args):
     plot_subplot(args, axes[0, 1], "prefill_e2e_time", "trace", (0.2, 1.2))
     plot_subplot(args, axes[1, 0], "request_e2e_time", "zipfian", (20, 35))
     plot_subplot(args, axes[1, 1], "prefill_e2e_time", "zipfian", (0.15, 0.4))
+    handles,labels = axes[1,1].get_legend_handles_labels()
 
     # Save the result
+    fig.legend(handles, labels, loc=(0.685,0.6), fontsize=12)
     fig.suptitle('CDF of Key Metrics for Different Balancers', fontsize = 24)
     fig.tight_layout()
     save_path = os.path.join(args.results_dir, "experiment_result.png")

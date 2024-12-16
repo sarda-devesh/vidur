@@ -5,6 +5,8 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 
+plt.rc('axes', labelsize=12)
+
 def create_scan_configs(args):
     # Get the configs for batched
     all_scheduler_configs = []
@@ -91,6 +93,8 @@ def plot_subplot(args, axis, target_schedule_type, metric_name):
     col_name = schedule_params[1].replace("_", " ").title()
     pivoted_df = pd.pivot_table(curr_df, values = 'metric_val', index = index_name, columns = col_name, aggfunc = "mean")
     summary_save_path = os.path.join(args.results_dir, f'{target_schedule_type}_{metric_name}.csv')
+    if (pivoted_df.index.name == "Binning Timeout"):
+        pivoted_df.index.name = "Binning Timeout (s)"
     pivoted_df.to_csv(summary_save_path)
     sns.heatmap(pivoted_df, ax = axis, annot=True)
 

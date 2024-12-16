@@ -99,22 +99,26 @@ def plot_subplot(args, axis, target_replica_counts, metric_name, metric_range):
 
     axis.set_xlim(metric_range)
     axis.set_ylim((0.9, 1.0))
-    axis.legend(fontsize = 11)
-    axis.set_xlabel(metric_title, fontsize = 14)
-    axis.set_ylabel("Factor of requests", fontsize = 14)
-    axis.set_title(curr_axis_title, fontsize = 16)
+    axis.xaxis.set_tick_params(labelsize=13)
+    axis.yaxis.set_tick_params(labelsize=13)
+    axis.set_xlabel(metric_title, fontsize = 16)
+    axis.set_ylabel("Factor of requests", fontsize = 16)
+    axis.set_title(curr_axis_title, fontsize = 18)
 
 def plot_results(args):
     fig, axes = plt.subplots(1, 3, figsize = (30, 5), sharey = True)
     plot_subplot(args, axes[0], [1, 3], "request_e2e_time", (0, 35))
     plot_subplot(args, axes[1], [2, 2], "request_e2e_time", (0, 35))
     plot_subplot(args, axes[2], [3, 1], "request_e2e_time", (0, 35))
+    handles,labels = axes[2].get_legend_handles_labels()
 
     # Save the result
+    legend = fig.legend(handles, labels, loc='outside right upper', bbox_to_anchor=(1,1.5), fontsize=14)
     fig.suptitle('CDF of Request Time for Different Model Configurations', fontsize = 24)
     fig.tight_layout()
-    save_path = os.path.join(args.results_dir, "experiment_result.png")
-    plt.savefig(save_path, dpi = 300)
+    save_path = os.path.join(args.results_dir, "experiment_resulta.png")
+    print(save_path)
+    plt.savefig(save_path, dpi = 300, bbox_inches='tight')
 
 def main():
     # Read in the args
